@@ -29,7 +29,7 @@ export function ProductGrid() {
       .catch(() => setLoading(false))
   }, [])
 
-  const categories = ['all', ...new Set(products.map((p) => p.category?.name).filter(Boolean))]
+  const categories = ['all', ...Array.from(new Set(products.map((p) => p.category?.name).filter(Boolean)))]
   const filtered = category === 'all' ? products : products.filter((p) => p.category?.name === category)
 
   if (loading) {
