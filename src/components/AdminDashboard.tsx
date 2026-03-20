@@ -14,6 +14,7 @@ import {
   Trash2,
   ExternalLink,
 } from 'lucide-react'
+import { ImageUploadButton } from './ImageUploadButton'
 
 type Tab = 'products' | 'consultations' | 'quiz' | 'discounts'
 
@@ -23,6 +24,7 @@ interface Product {
   slug: string
   description?: string
   price: number
+  images?: string[]
   categoryId?: string
   category?: { name: string }
 }
@@ -315,6 +317,9 @@ function ProductForm({
   const [slug, setSlug] = useState(product?.slug || '')
   const [description, setDescription] = useState((product as { description?: string })?.description || '')
   const [price, setPrice] = useState(product?.price?.toString() || '')
+  const [imageUrls, setImageUrls] = useState(
+    product?.images?.length ? product.images.join('\n') : ''
+  )
   const [loading, setLoading] = useState(false)
   const [categoryId, setCategoryId] = useState('')
 
@@ -337,7 +342,10 @@ function ProductForm({
           slug: slug || name.toLowerCase().replace(/\s+/g, '-'),
           description,
           price: Number(price),
-          images: [],
+          images: imageUrls
+            .split(/[\n,]/)
+            .map((u) => u.trim())
+            .filter(Boolean),
           categoryId: categoryId || categories[0]?.id,
         }),
       })
@@ -371,6 +379,22 @@ function ProductForm({
             placeholder="serum-growth"
             className="w-full px-4 py-2 rounded-lg border border-sand-200"
           />
+        </div>
+        <div>
+          <label className="block text-sm text-brown-100 mb-1">Şəkil URL-ləri (hər sətrə bir link)</label>
+          <div className="flex gap-2">
+            <textarea
+              value={imageUrls}
+              onChange={(e) => setImageUrls(e.target.value)}
+              placeholder={'https://placehold.co/600x800/image.jpg\nvə ya "Yüklə" düyməsi ilə kompüterdən əlavə edin'}
+              rows={3}
+              className="flex-1 px-4 py-2 rounded-lg border border-sand-200 font-mono text-sm"
+            />
+            <div className="flex flex-col gap-1">
+              <ImageUploadButton onUploaded={(url) => setImageUrls((prev) => (prev ? `${prev}\n${url}` : url))} />
+            </div>
+          </div>
+          <p className="text-xs text-brown-100/70 mt-1">Kompüterdən yüklə və ya link yapışdırın (placehold.co, imgbb.com və s.)</p>
         </div>
         <div>
           <label className="block text-sm text-brown-100 mb-1">Təsvir</label>
