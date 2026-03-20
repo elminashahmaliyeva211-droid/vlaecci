@@ -2,6 +2,8 @@
  * Consultation request API - POST to save consultation requests
  */
 import { NextResponse } from 'next/server'
+
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/db'
 
 export async function POST(req: Request) {

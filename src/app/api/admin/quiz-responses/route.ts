@@ -2,6 +2,8 @@
  * Admin quiz responses - list all
  */
 import { NextResponse } from 'next/server'
+
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/db'
 import { requireAdmin } from '@/lib/middleware'
 

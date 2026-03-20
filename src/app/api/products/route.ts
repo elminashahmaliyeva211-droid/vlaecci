@@ -2,6 +2,8 @@
  * Products API - GET all products (public), POST new product (admin only)
  */
 import { NextResponse } from 'next/server'
+
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/db'
 
 // Parse images JSON helper

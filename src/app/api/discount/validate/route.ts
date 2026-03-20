@@ -2,6 +2,8 @@
  * Public API - validate discount code
  */
 import { NextResponse } from 'next/server'
+
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/db'
 
 export async function POST(req: Request) {

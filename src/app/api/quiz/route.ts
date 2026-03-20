@@ -2,6 +2,8 @@
  * Quiz API - POST to save quiz response and get product recommendations
  */
 import { NextResponse } from 'next/server'
+
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/db'
 
 // Map quiz answers to recommended product slugs

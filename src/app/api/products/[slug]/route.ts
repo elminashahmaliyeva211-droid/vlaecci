@@ -2,6 +2,8 @@
  * Single product by slug - GET (public)
  */
 import { NextResponse } from 'next/server'
+
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/db'
 
 function parseProduct(product: { images: string; [key: string]: unknown }) {

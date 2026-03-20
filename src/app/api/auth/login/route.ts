@@ -2,6 +2,8 @@
  * Admin login API - POST email + password, returns session cookie
  */
 import { NextResponse } from 'next/server'
+
+export const dynamic = 'force-dynamic'
 import { prisma } from '@/lib/db'
 import bcrypt from 'bcryptjs'
 import { createSession, setAuthCookie } from '@/lib/auth'
