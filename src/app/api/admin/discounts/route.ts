@@ -8,6 +8,7 @@ import { prisma } from '@/lib/db'
 import { requireAdmin } from '@/lib/middleware'
 
 export async function GET() {
+  if (process.env.NEXT_PHASE === 'phase-production-build') return NextResponse.json({ codes: [] })
   try {
     await requireAdmin()
     const codes = await prisma.discountCode.findMany({

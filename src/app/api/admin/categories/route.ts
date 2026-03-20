@@ -8,6 +8,10 @@ import { prisma } from '@/lib/db'
 import { requireAdmin } from '@/lib/middleware'
 
 export async function GET() {
+  // Allow build to complete - Next.js invokes routes during "collect page data" phase
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return NextResponse.json({ categories: [] })
+  }
   try {
     await requireAdmin()
     const categories = await prisma.category.findMany({

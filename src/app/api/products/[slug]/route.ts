@@ -15,6 +15,9 @@ export async function GET(
   _req: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return NextResponse.json({ error: 'Product not found' }, { status: 404 })
+  }
   try {
     const { slug } = await params
     const product = await prisma.product.findUnique({

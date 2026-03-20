@@ -13,6 +13,7 @@ function parseProduct(p: { images: string; [key: string]: unknown }) {
 }
 
 export async function GET() {
+  if (process.env.NEXT_PHASE === 'phase-production-build') return NextResponse.json({ products: [] })
   try {
     await requireAdmin()
     const products = await prisma.product.findMany({
