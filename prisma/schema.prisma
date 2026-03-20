@@ -1,0 +1,76 @@
+// VLAECCI - Hair Care Brand Database Schema
+// SQLite for MVP - easy to migrate to PostgreSQL later
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Admin users for dashboard
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+}
+
+// Product categories (serum, shampoo, etc.)
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  products  Product[]
+}
+
+// Products
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String
+  price       Float
+  images      String    // JSON array of image URLs
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  benefits    String?   // JSON array of benefit strings
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Quiz responses for hair diagnosis
+model QuizResponse {
+  id             String   @id @default(cuid())
+  hairLossLevel  String   // mild, moderate, severe
+  hairType       String   // thin, normal, thick, curly
+  scalpCondition String   // oily, dry, normal, sensitive
+  recommendations String // JSON array of recommended product IDs
+  email          String?
+  createdAt      DateTime @default(now())
+}
+
+// Consultation requests
+model ConsultationRequest {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  hairIssue String
+  notes     String?
+  status    String   @default("pending") // pending, contacted, completed
+  createdAt DateTime @default(now())
+}
+
+// Discount codes
+model DiscountCode {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  percentage  Int      // e.g. 15 for 15% off
+  expiresAt   DateTime?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
