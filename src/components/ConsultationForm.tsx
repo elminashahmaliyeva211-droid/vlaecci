@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Loader2, Check } from 'lucide-react'
+import { apiFetch } from '@/lib/api'
 
 export function ConsultationForm() {
   const [loading, setLoading] = useState(false)
@@ -14,7 +15,7 @@ export function ConsultationForm() {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('/api/consultation', {
+      const res = await apiFetch('/consultation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

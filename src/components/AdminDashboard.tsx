@@ -15,6 +15,7 @@ import {
   ExternalLink,
 } from 'lucide-react'
 import { ImageUploadButton } from './ImageUploadButton'
+import { apiFetch } from '@/lib/api'
 
 type Tab = 'products' | 'consultations' | 'quiz' | 'discounts'
 
@@ -67,11 +68,11 @@ export function AdminDashboard() {
   const fetchData = async () => {
     try {
       const [pRes, cRes, qRes, dRes, catRes] = await Promise.all([
-        fetch('/api/admin/products'),
-        fetch('/api/admin/consultations'),
-        fetch('/api/admin/quiz-responses'),
-        fetch('/api/admin/discounts'),
-        fetch('/api/admin/categories'),
+        apiFetch('/admin/products'),
+        apiFetch('/admin/consultations'),
+        apiFetch('/admin/quiz-responses'),
+        apiFetch('/admin/discounts'),
+        apiFetch('/admin/categories'),
       ])
       if (pRes.status === 401 || cRes.status === 401) {
         router.push('/admin/login')
@@ -101,14 +102,14 @@ export function AdminDashboard() {
   }, [])
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
+    await apiFetch('/auth/logout', { method: 'POST' })
     router.push('/admin/login')
     router.refresh()
   }
 
   const deleteProduct = async (id: string) => {
     if (!confirm('Məhsulu silmək istədiyinizə əminsiniz?')) return
-    await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
+    await apiFetch(`/admin/products/${id}`, { method: 'DELETE' })
     fetchData()
   }
 
@@ -333,8 +334,8 @@ function ProductForm({
     e.preventDefault()
     setLoading(true)
     try {
-      const url = product ? `/api/admin/products/${product.id}` : '/api/admin/products'
-      const res = await fetch(url, {
+      const url = product ? `/admin/products/${product.id}` : '/admin/products'
+      const res = await apiFetch(url, {
         method: product ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -453,7 +454,7 @@ function DiscountForm({ onSave }: { onSave: () => void }) {
     e.preventDefault()
     setLoading(true)
     try {
-      const res = await fetch('/api/admin/discounts', {
+      const res = await apiFetch('/admin/discounts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, percentage: Number(percentage) }),

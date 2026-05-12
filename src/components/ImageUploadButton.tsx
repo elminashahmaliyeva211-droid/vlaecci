@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { Upload, Loader2 } from 'lucide-react'
+import { apiFetch } from '@/lib/api'
 
 export function ImageUploadButton({ onUploaded }: { onUploaded: (url: string) => void }) {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -20,10 +21,9 @@ export function ImageUploadButton({ onUploaded }: { onUploaded: (url: string) =>
     try {
       const formData = new FormData()
       formData.append('file', file)
-      const res = await fetch('/api/admin/upload', {
+      const res = await apiFetch('/admin/upload', {
         method: 'POST',
         body: formData,
-        credentials: 'include',
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Xəta')

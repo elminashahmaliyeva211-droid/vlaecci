@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { apiFetch } from '@/lib/api'
 
 interface Product {
   id: string
@@ -20,7 +21,7 @@ export function ProductGrid() {
   const [category, setCategory] = useState<string>('all')
 
   useEffect(() => {
-    fetch('/api/products')
+    apiFetch('/products')
       .then((res) => res.json())
       .then((data) => {
         setProducts(data.products || [])

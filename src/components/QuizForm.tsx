@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, Loader2 } from 'lucide-react'
+import { apiFetch } from '@/lib/api'
 
 const STEPS = [
   {
@@ -62,7 +63,7 @@ export function QuizForm() {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('/api/quiz', {
+      const res = await apiFetch('/quiz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

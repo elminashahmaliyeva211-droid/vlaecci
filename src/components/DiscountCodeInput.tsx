@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Tag, Check, X } from 'lucide-react'
+import { apiFetch } from '@/lib/api'
 
 interface DiscountCodeInputProps {
   onValid?: (code: string, percentage: number) => void
@@ -20,7 +21,7 @@ export function DiscountCodeInput({ onValid, onInvalid, className = '' }: Discou
     setLoading(true)
     setStatus('idle')
     try {
-      const res = await fetch('/api/discount/validate', {
+      const res = await apiFetch('/discount/validate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: code.trim() }),
@@ -49,7 +50,10 @@ export function DiscountCodeInput({ onValid, onInvalid, className = '' }: Discou
         <input
           type="text"
           value={code}
-          onChange={(e) => { setCode(e.target.value.toUpperCase()); setStatus('idle') }}
+          onChange={(e) => {
+            setCode(e.target.value.toUpperCase())
+            setStatus('idle')
+          }}
           onKeyDown={(e) => e.key === 'Enter' && validate()}
           placeholder="Endirim kodu"
           className={`w-full pl-10 pr-4 py-3 rounded-xl border bg-cream-50 focus:outline-none focus:ring-2 focus:ring-accent-rose/50 ${
@@ -75,6 +79,7 @@ export function DiscountCodeInput({ onValid, onInvalid, className = '' }: Discou
       >
         {loading ? '...' : 'Tətbiq et'}
       </button>
+      {status === 'valid' && percentage > 0 ? <span className="hidden">{percentage}</span> : null}
     </div>
   )
 }

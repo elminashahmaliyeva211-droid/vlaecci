@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'placehold.co', pathname: '/**' },
       { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' },
-      { protocol: 'http', hostname: 'localhost', pathname: '/**' },
+      { protocol: 'http', hostname: 'localhost', port: '4000', pathname: '/**' },
     ],
   },
 }
